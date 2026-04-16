@@ -39,7 +39,7 @@ jobs:
         run: npm run dist:electron -- --publish never
 
       - name: Upload Output Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           # Naming the artifact based on the OS it was built on
           name: EMS-App-${{ matrix.os }}
