@@ -1,0 +1,29 @@
+appId: com.aptivora.ems
+productName: EMS
+directories:
+  output: dist-installers
+files:
+  - dist/**/*
+  - dist-electron/**/*
+  - package.json
+extraMetadata:
+  main: dist-electron/main/index.js
+mac:
+  target:
+    - dmg
+win:
+  target:
+    - nsis
+linux:
+  maintainer: Aptivora Global Solutions <support@aptivoraglobalsolutions.com>
+  category: Office
+  icon: build/icons/icon.png
+  target:
+    - target: AppImage
+      arch:
+        - x64
+    - target: pacman
+      arch:
+        - x64
+publish:
+  provider: github
