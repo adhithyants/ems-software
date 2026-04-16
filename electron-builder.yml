@@ -9,9 +9,11 @@ files:
 extraMetadata:
   main: dist-electron/main/index.js
 mac:
+  icon: build/icons/icon.png
   target:
     - dmg
 win:
+  icon: build/icons/icon.ico
   target:
     - nsis
 linux:
