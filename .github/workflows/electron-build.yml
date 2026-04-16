@@ -1,0 +1,46 @@
+name: Build Electron App
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch: # Allows you to manually trigger the build from the Actions tab
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      # This runs 3 jobs in parallel! One for each OS.
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+      
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Electron Installers
+        # This will build specific to the OS the job is currently running on.
+        run: npm run dist:electron
+
+      - name: Upload Output Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          # Naming the artifact based on the OS it was built on
+          name: EMS-App-${{ matrix.os }}
+          # Path to where your electron-builder outputs the files
+          path: |
+            dist-installers/*.exe
+            dist-installers/*.dmg
+            dist-installers/*.AppImage
+            dist-installers/*.pacman
+          # Don't fail if we don't find all file types (e.g., Windows job won't find .dmg)
+          if-no-files-found: ignore
